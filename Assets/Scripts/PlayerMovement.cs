@@ -2,8 +2,11 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public float moveSpeed = 5f;
+    public float constantForwardSpeed = 5f; // Positive for movement along the world Z-axis
+    public float sidewaysSpeed = 7f;
     public float jumpForce = 10f;
+    public Transform groundCheck;
+    public LayerMask groundLayer;
 
     private Rigidbody rb;
     private bool isGrounded;
@@ -15,42 +18,33 @@ public class PlayerMovement : MonoBehaviour
 
     void Update()
     {
-        
-        float horizontalMovement = Input.GetAxis("Horizontal");
-        float verticalMovement = Input.GetAxis("Vertical");
-        Vector3 movement = new Vector3(horizontalMovement, 0f, verticalMovement);
-        rb.velocity = new Vector3(movement.x * moveSpeed, rb.velocity.y, movement.z * moveSpeed);
+        // Check if the player is grounded
+        isGrounded = Physics.CheckSphere(groundCheck.position, 0.1f, groundLayer);
 
-        
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        // Constant forward movement
+        rb.velocity = new Vector3(0f, rb.velocity.y, -constantForwardSpeed); // Negative for opposite direction
+
+        // Player movement
+        float horizontalInput = Input.GetAxis("Horizontal");
+
+        Vector3 moveDirection = new Vector3(horizontalInput * sidewaysSpeed, 0f, 0f).normalized;
+        rb.position += moveDirection * Time.deltaTime; // Move the player using position
+
+        // Player jump
+        if (isGrounded && Input.GetButtonDown("Jump"))
         {
-            Jump();
-        }
-    }
-
-    void Jump()
-    {
-        rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
-    }
-
-    void OnCollisionEnter(Collision collision)
-    {
-        
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = true;
-        }
-    }
-
-    void OnCollisionExit(Collision collision)
-    {
-        
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            isGrounded = false;
+            rb.velocity = new Vector3(rb.velocity.x, jumpForce, rb.velocity.z);
         }
     }
 }
+
+
+
+
+
+
+
+
 
 
 
