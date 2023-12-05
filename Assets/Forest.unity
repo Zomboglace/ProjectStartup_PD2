@@ -3305,7 +3305,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   constantForwardSpeed: 2
   sidewaysSpeed: 94.1
-  jumpForce: 4.5
+  jumpForce: 5
   groundCheck: {fileID: 330739063}
   groundLayer:
     serializedVersion: 2
@@ -12198,7 +12198,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   player: {fileID: 401308485}
-  cameraZOffset: -1
+  cameraZOffset: -3
   cameraRotation: {x: 65.216, y: 5.165, z: 4.133}
 --- !u!4 &1366427469 stripped
 Transform:
