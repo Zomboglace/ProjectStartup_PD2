@@ -1,20 +1,28 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class FollowPlayer : MonoBehaviour
 {
-    public Transform playerTransform;
-    public Vector3 offset = new Vector3(0f, 5f, -10f);
-    public float smoothSpeed = 0.5f;
+    public Transform player;  // Reference to the player's transform
+    public float followSpeed = 5f;  // Speed at which the object follows the player
 
-    void LateUpdate()
+    void Update()
     {
-        if (playerTransform != null)
+        if (player != null)
         {
-            Vector3 desiredPosition = playerTransform.position + offset;
-            Vector3 smoothedPosition = Vector3.Lerp(transform.position, desiredPosition, smoothSpeed);
-            transform.position = smoothedPosition;
+            // Calculate the direction from the current position to the player's position
+            Vector3 direction = player.position - transform.position;
 
-            transform.LookAt(playerTransform);
+            // Normalize the direction vector to ensure consistent movement speed
+            direction.Normalize();
+
+            // Move the object towards the player
+            transform.position += direction * followSpeed * Time.deltaTime;
+        }
+        else
+        {
+            Debug.LogWarning("Player reference not set. Please assign the player GameObject in the inspector.");
         }
     }
 }
