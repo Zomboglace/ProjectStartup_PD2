@@ -7,22 +7,51 @@ public class Collectible : MonoBehaviour
     public int scoreValue = 100;
     private ScoreManager scoreManager;
 
+    
+    public AudioClip collectionSound;
+
+    
+    private AudioSource audioSource;
+
     void Start()
     {
-        // Find the ScoreManager in the scene
+        
         scoreManager = FindObjectOfType<ScoreManager>();
+
+        
+        audioSource = GetComponent<AudioSource>();
+        if (audioSource == null)
+        {
+            audioSource = gameObject.AddComponent<AudioSource>();
+        }
+
+        
+        audioSource.clip = collectionSound;
     }
 
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            // Increase the score when the player collects the item
+            
+            PlayCollectionSound();
+
+            
             scoreManager.IncreaseScore(scoreValue);
 
-            // Optionally, you can destroy the collected item
+            
             Destroy(gameObject);
         }
     }
+
+    
+    private void PlayCollectionSound()
+    {
+        if (audioSource != null && collectionSound != null)
+        {
+            audioSource.PlayOneShot(collectionSound);
+        }
+    }
 }
+
 
