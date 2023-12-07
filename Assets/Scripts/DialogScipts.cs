@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class DialogScipts : MonoBehaviour
 {
@@ -13,6 +14,7 @@ public class DialogScipts : MonoBehaviour
     public GameObject[] gameObjects;
     private int currentDialogIndex;
     private bool isDisplayingText;
+    public string nextScene;
 
 
     [System.Serializable]
@@ -61,8 +63,7 @@ public class DialogScipts : MonoBehaviour
         }
         else
         {
-            // All dialogs displayed, you can perform any other actions here
-            Debug.Log("End of dialogs");
+            SceneManager.LoadScene("EndTextScene");
         }
     }
 
@@ -74,7 +75,7 @@ public class DialogScipts : MonoBehaviour
         foreach (char letter in dialog)
         {
             dialogText.text += letter;
-            yield return new WaitForSeconds(0.03f);
+            yield return new WaitForSeconds(0.01f);
         }
 
         isDisplayingText = false;
