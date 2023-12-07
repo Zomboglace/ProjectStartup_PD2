@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class DialogScipts : MonoBehaviour
 {
 
+    public Text dialogName;
     public Text dialogText;
     
     public Dialog[] dialogs;
@@ -17,6 +18,7 @@ public class DialogScipts : MonoBehaviour
     [System.Serializable]
     public class Dialog
     {
+        public string name;
         [TextArea(3, 10)]
         public string dialog;
         public bool[] gameObjectsToActivate;
@@ -40,16 +42,21 @@ public class DialogScipts : MonoBehaviour
 
     private void DisplayNextDialog()
     {
-        for (int i = 0; i < gameObjects.Length; i++) {
-            if (dialogs[currentDialogIndex].gameObjectsToActivate[i]) {
-                gameObjects[i].SetActive(true);
-            } else {
-                gameObjects[i].SetActive(false);
-            }
-        }
         if (currentDialogIndex < dialogs.Length)
         {
+            for (int i = 0; i < gameObjects.Length; i++) {
+                if (i > dialogs[currentDialogIndex].gameObjectsToActivate.Length - 1) {
+                    gameObjects[i].SetActive(false);
+                    continue;
+                }
+                if (dialogs[currentDialogIndex].gameObjectsToActivate[i]) {
+                    gameObjects[i].SetActive(true);
+                } else {
+                    gameObjects[i].SetActive(false);
+                }
+            }
             StartCoroutine(DisplayDialog(dialogs[currentDialogIndex].dialog));
+            dialogName.text = dialogs[currentDialogIndex].name;
             currentDialogIndex++;
         }
         else
